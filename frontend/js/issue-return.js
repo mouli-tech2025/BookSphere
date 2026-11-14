@@ -1,4 +1,4 @@
-// issue-return.js
+// issue-return.js — BookSphere Circulation Desk
 
 async function populateDropdowns() {
   // Populate student dropdown
@@ -7,7 +7,7 @@ async function populateDropdowns() {
   studSel.innerHTML = '<option value="">Select Student...</option>';
   if (sr.ok && sr.data.success && sr.data.data) {
     sr.data.data.forEach(s => {
-      studSel.innerHTML += `<option value="${s.id}">${escapeHtml(s.name)} (${escapeHtml(s.rollNo)})</option>`;
+      studSel.innerHTML += `<option value="${s.id}">${escapeHtml(s.name)} (${escapeHtml(s.rollNo)} · ${escapeHtml(s.department)})</option>`;
     });
   }
 
@@ -17,7 +17,7 @@ async function populateDropdowns() {
   bookSel.innerHTML = '<option value="">Select Book...</option>';
   if (br.ok && br.data.success && br.data.data) {
     br.data.data.filter(b => b.availableCopies > 0).forEach(b => {
-      bookSel.innerHTML += `<option value="${b.id}">${escapeHtml(b.title)} [${b.availableCopies} available - ${escapeHtml(b.type)}]</option>`;
+      bookSel.innerHTML += `<option value="${b.id}">${escapeHtml(b.title)} [${b.availableCopies} available · ${escapeHtml(b.type)}]</option>`;
     });
   }
 }
@@ -83,7 +83,7 @@ async function returnBook(issueId) {
 async function loadIssues() {
   const status = document.getElementById('status-filter').value;
   const tbody  = document.getElementById('issues-tbody');
-  tbody.innerHTML = '<tr><td colspan="8" class="loading">Loading...</td></tr>';
+  tbody.innerHTML = '<tr><td colspan="8" class="loading">Loading circulation records...</td></tr>';
 
   const params = new URLSearchParams();
   if (status) params.set('status', status);
@@ -96,22 +96,22 @@ async function loadIssues() {
   const issues = r.data.data || [];
   if (issues.length === 0) {
     tbody.innerHTML = `<tr><td colspan="8"><div class="empty-state">
-      <div class="empty-state-icon">📋</div><h3>No issue records found</h3></div></td></tr>`;
+      <div class="empty-state-icon">📋</div><h3>No circulation records found</h3></div></td></tr>`;
     return;
   }
   tbody.innerHTML = issues.map(i => `
     <tr>
       <td><strong>${escapeHtml(i.bookTitle)}</strong></td>
       <td>${escapeHtml(i.studentName)}</td>
-      <td>${escapeHtml(i.rollNo)}</td>
-      <td>${escapeHtml(i.issueDate)}</td>
-      <td>${escapeHtml(i.dueDate)}</td>
-      <td>${i.returnDate ? escapeHtml(i.returnDate) : '—'}</td>
-      <td>${i.fine > 0 ? `<strong style="color:var(--coral)">₹${Number(i.fine).toFixed(2)}</strong>` : '₹0.00'}</td>
+      <td><span class="font-mono text-xs font-bold" style="background:#FFE600;padding:2px 6px;border:1px solid #000;border-radius:4px;">${escapeHtml(i.rollNo)}</span></td>
+      <td><span class="font-mono text-xs">${escapeHtml(i.issueDate)}</span></td>
+      <td><span class="font-mono text-xs">${escapeHtml(i.dueDate)}</span></td>
+      <td><span class="font-mono text-xs">${i.returnDate ? escapeHtml(i.returnDate) : '—'}</span></td>
+      <td>${i.fine > 0 ? `<strong style="color:var(--pink);background:#000;padding:2px 6px;border-radius:4px;font-family:monospace;">₹${Number(i.fine).toFixed(2)}</strong>` : '<span class="font-mono text-xs">₹0.00</span>'}</td>
       <td>
-        <div style="display:flex;gap:6px;align-items:center;">
+        <div style="display:flex;gap:8px;align-items:center;">
           <span class="badge badge-${i.status.toLowerCase()}">${escapeHtml(i.status)}</span>
-          ${i.status === 'ISSUED' ? `<button class="btn btn-success btn-sm" onclick="returnBook(${i.issueId})">Return</button>` : ''}
+          ${i.status === 'ISSUED' ? `<button class="neo-btn btn-mint btn-sm" onclick="returnBook(${i.issueId})">Return Book</button>` : ''}
         </div>
       </td>
     </tr>`).join('');

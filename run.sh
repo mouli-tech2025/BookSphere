@@ -9,7 +9,7 @@ DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 cd "$DIR"
 
 echo "=================================================="
-echo "  LIBRO — Library Management System"
+echo "  BookSphere — Library Management System"
 echo "=================================================="
 
 # Check Java installation

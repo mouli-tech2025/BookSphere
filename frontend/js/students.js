@@ -1,9 +1,9 @@
-// students.js
+// students.js — BookSphere Students Directory
 
 async function loadStudents() {
   const q     = document.getElementById('search-query').value.trim();
   const tbody = document.getElementById('students-tbody');
-  tbody.innerHTML = '<tr><td colspan="5" class="loading">Loading...</td></tr>';
+  tbody.innerHTML = '<tr><td colspan="5" class="loading">Loading student records...</td></tr>';
 
   const params = new URLSearchParams();
   if (q) params.set('query', q);
@@ -18,15 +18,15 @@ async function loadStudents() {
   if (students.length === 0) {
     tbody.innerHTML = `<tr><td colspan="5"><div class="empty-state">
       <div class="empty-state-icon">👤</div>
-      <h3>No students found</h3><p>Try searching by name, roll number, or department.</p></div></td></tr>`;
+      <h3>No students found</h3><p>Try searching by student name, roll number, or department.</p></div></td></tr>`;
     return;
   }
   tbody.innerHTML = students.map(s => `
     <tr>
       <td><strong>${escapeHtml(s.name)}</strong></td>
-      <td>${escapeHtml(s.email)}</td>
-      <td>${escapeHtml(s.phone)}</td>
-      <td><strong>${escapeHtml(s.rollNo)}</strong></td>
+      <td><span class="font-mono text-xs">${escapeHtml(s.email)}</span></td>
+      <td><span class="font-mono text-xs">${escapeHtml(s.phone)}</span></td>
+      <td><span class="font-mono text-xs font-bold" style="background:#FFE600;padding:2px 6px;border:1px solid #000;border-radius:4px;">${escapeHtml(s.rollNo)}</span></td>
       <td><span class="badge badge-textbook">${escapeHtml(s.department)}</span></td>
     </tr>`).join('');
 }
@@ -56,4 +56,8 @@ document.addEventListener('DOMContentLoaded', () => {
   loadStudents();
   document.getElementById('search-query').addEventListener('input', loadStudents);
   document.getElementById('student-form').addEventListener('submit', registerStudent);
+
+  if (new URLSearchParams(window.location.search).get('action') === 'register') {
+    openModal('student-modal');
+  }
 });

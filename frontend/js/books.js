@@ -1,4 +1,4 @@
-// books.js
+// books.js — BookSphere Books Management
 
 let editingBookId = null;
 
@@ -6,7 +6,7 @@ async function loadBooks() {
   const q        = document.getElementById('search-query').value.trim();
   const category = document.getElementById('search-category').value;
   const tbody    = document.getElementById('books-tbody');
-  tbody.innerHTML = '<tr><td colspan="8" class="loading">Loading...</td></tr>';
+  tbody.innerHTML = '<tr><td colspan="8" class="loading">Loading catalog...</td></tr>';
 
   const params = new URLSearchParams();
   if (q)        params.set('query', q);
@@ -22,21 +22,21 @@ async function loadBooks() {
   if (books.length === 0) {
     tbody.innerHTML = `<tr><td colspan="8">
       <div class="empty-state"><div class="empty-state-icon">📚</div>
-      <h3>No books found</h3><p>Try a different search or filter.</p></div></td></tr>`;
+      <h3>No books found</h3><p>Try adjusting your search query or category filter.</p></div></td></tr>`;
     return;
   }
   tbody.innerHTML = books.map(b => `
     <tr>
       <td><strong>${escapeHtml(b.title)}</strong></td>
       <td>${escapeHtml(b.author)}</td>
-      <td style="font-size:0.85rem">${escapeHtml(b.isbn)}</td>
-      <td>${escapeHtml(b.category)}</td>
+      <td><span class="font-mono text-xs">${escapeHtml(b.isbn)}</span></td>
+      <td><span class="badge" style="background:#FFFFFF;border-color:#000;">${escapeHtml(b.category)}</span></td>
       <td><span class="badge badge-${b.type.toLowerCase()}">${escapeHtml(b.type)}</span></td>
       <td>${availBadge(b)}</td>
-      <td>${b.loanPeriodDays}d / ₹${b.finePerDay}/day</td>
-      <td class="td-actions">
-        <button class="btn btn-secondary btn-sm" onclick="openEdit(${b.id})">Edit</button>
-        <button class="btn btn-danger btn-sm" onclick="deleteBook(${b.id}, '${escapeHtml(b.title).replace(/'/g, "\\'")}')">Delete</button>
+      <td><span class="font-mono text-xs font-bold">${b.loanPeriodDays}d · ₹${b.finePerDay}/day</span></td>
+      <td style="white-space:nowrap;">
+        <button class="neo-btn btn-white btn-sm" onclick="openEdit(${b.id})">Edit</button>
+        <button class="neo-btn btn-pink btn-sm" style="margin-left:6px;" onclick="deleteBook(${b.id}, '${escapeHtml(b.title).replace(/'/g, "\\'")}')">Delete</button>
       </td>
     </tr>`).join('');
 }
@@ -62,11 +62,11 @@ async function openEdit(id) {
   editingBookId = id;
   const r = await apiGet('/api/books/' + id);
   if (!r.ok || !r.data.success) {
-    showToast(r.data.message || 'Error fetching book', 'error');
+    showToast(r.data.message || 'Error fetching book details', 'error');
     return;
   }
   const b = r.data.data;
-  document.getElementById('modal-title').textContent = 'Edit Book';
+  document.getElementById('modal-title').textContent = 'Edit Book Details';
   document.getElementById('f-title').value       = b.title;
   document.getElementById('f-author').value      = b.author;
   document.getElementById('f-isbn').value        = b.isbn;
@@ -116,4 +116,8 @@ document.addEventListener('DOMContentLoaded', () => {
   document.getElementById('search-query').addEventListener('input', loadBooks);
   document.getElementById('search-category').addEventListener('change', loadBooks);
   document.getElementById('book-form').addEventListener('submit', saveBook);
+
+  if (new URLSearchParams(window.location.search).get('action') === 'add') {
+    openAdd();
+  }
 });

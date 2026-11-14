@@ -3,87 +3,303 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>LIBRO — Dashboard</title>
+  <title>BookSphere — Library Dashboard</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=Archivo+Black&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/style.css">
+  <script>
+    if (localStorage.getItem('booksphere_sidebar_collapsed') === 'true' && window.innerWidth > 900) {
+      document.documentElement.classList.add('sidebar-collapsed');
+    }
+  </script>
 </head>
 <body>
-  <!-- Top Navigation -->
-  <nav class="navbar">
-    <div class="navbar-logo">LIBRO</div>
-    <ul class="navbar-links">
-      <li><a href="dashboard.html" class="active">Dashboard</a></li>
-      <li><a href="books.html">Books</a></li>
-      <li><a href="students.html">Students</a></li>
-      <li><a href="issue-return.html">Issue & Return</a></li>
-    </ul>
-  </nav>
+  <div class="app-layout">
+    <!-- Fixed Sidebar -->
+    <aside class="sidebar">
+      <div>
+        <a href="dashboard.html" class="sidebar-brand">
+          <div class="brand-icon">BS</div>
+          <div class="brand-meta">
+            <div class="brand-title-row">
+              <span class="brand-name">BookSphere</span>
+             
+            </div>
+            <span class="brand-subtitle">Library Management</span>
+          </div>
+        </a>
 
-  <!-- Main Container -->
-  <main class="container">
-    <div class="page-header">
-      <h1 class="page-title">Library Overview</h1>
+        <div class="sidebar-content">
+          <span class="sidebar-section-title">// Navigation</span>
+          <ul class="nav-menu">
+            <li class="nav-item">
+              <a href="dashboard.html" class="active">
+                <div class="nav-item-content">
+                  <span class="nav-item-icon">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg>
+                  </span>
+                  <span>Dashboard</span>
+                </div>
+                <span class="nav-pill-badge">Live</span>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a href="books.html">
+                <div class="nav-item-content">
+                  <span class="nav-item-icon">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path></svg>
+                  </span>
+                  <span>Books Catalog</span>
+                </div>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a href="students.html">
+                <div class="nav-item-content">
+                  <span class="nav-item-icon">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
+                  </span>
+                  <span>Students</span>
+                </div>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a href="issue-return.html">
+                <div class="nav-item-content">
+                  <span class="nav-item-icon">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="17 1 21 5 17 9"></polyline><path d="M3 11V9a4 4 0 0 1 4-4h14"></path><polyline points="7 23 3 19 7 15"></polyline><path d="M21 13v2a4 4 0 0 1-4 4H3"></path></svg>
+                  </span>
+                  <span>Circulation Desk</span>
+                </div>
+              </a>
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="sidebar-footer">
+        <div class="system-status-box">
+          <div class="status-left">
+            <span class="pulse-dot"></span>
+            <span class="status-text">System Active</span>
+          </div>
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Main Container -->
+    <div class="main-wrapper">
+      <!-- Sticky Top Bar -->
+      <header class="top-header">
+        <div class="header-breadcrumbs">
+          <button class="sidebar-toggle-btn mobile-menu-btn" id="sidebar-toggle-btn" aria-label="Toggle navigation" title="Toggle Sidebar">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#000" stroke-width="2.5"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
+          </button>
+          <a href="dashboard.html" class="breadcrumb-root">BookSphere</a>
+          <span class="breadcrumb-sep">/</span>
+          <span class="breadcrumb-page">Dashboard</span>
+        </div>
+
+        <div class="header-right">
+          <span class="header-role-badge">
+            <span style="opacity:0.6;">ROLE:</span> LIBRARIAN
+          </span>
+          <div class="header-user-avatar" title="Librarian Administrator">BS</div>
+        </div>
+      </header>
+
+      <!-- Main Page Body -->
+      <main class="page-container">
+        <div class="page-title-bar">
+          <div class="page-title-meta">
+            <h1>System Overview</h1>
+            <p>Real-time circulation metrics, active catalog inventory, and rapid desk actions.</p>
+          </div>
+          <div>
+            <a href="issue-return.html" class="neo-btn btn-yellow">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="17 1 21 5 17 9"></polyline><path d="M3 11V9a4 4 0 0 1 4-4h14"></path><polyline points="7 23 3 19 7 15"></polyline><path d="M21 13v2a4 4 0 0 1-4 4H3"></path></svg>
+              <span>Issue / Return Desk</span>
+            </a>
+          </div>
+        </div>
+
+        <!-- 4 Metric Cards -->
+        <section class="stats-grid">
+          <!-- Total Books -->
+          <div class="stat-card">
+            <div class="stat-card-header">
+              <span class="stat-card-title">Total Books</span>
+              <div class="stat-card-icon">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#000" stroke-width="2.2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path></svg>
+              </div>
+            </div>
+            <div class="stat-card-value" id="stat-total">0</div>
+            <div class="stat-card-footer">
+              <span>● Complete catalog volume</span>
+            </div>
+          </div>
+
+          <!-- Available Books -->
+          <div class="stat-card">
+            <div class="stat-card-header">
+              <span class="stat-card-title">Available Copies</span>
+              <div class="stat-card-icon">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#000" stroke-width="2.2"><polyline points="20 6 9 17 4 12"></polyline></svg>
+              </div>
+            </div>
+            <div class="stat-card-value" id="stat-avail">0</div>
+            <div class="stat-card-footer">
+              <span>● Ready for checkout</span>
+            </div>
+          </div>
+
+          <!-- Issued Books -->
+          <div class="stat-card">
+            <div class="stat-card-header">
+              <span class="stat-card-title">Currently Issued</span>
+              <div class="stat-card-icon">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#000" stroke-width="2.2"><polyline points="17 1 21 5 17 9"></polyline><path d="M3 11V9a4 4 0 0 1 4-4h14"></path><polyline points="7 23 3 19 7 15"></polyline><path d="M21 13v2a4 4 0 0 1-4 4H3"></path></svg>
+              </div>
+            </div>
+            <div class="stat-card-value" id="stat-issued">0</div>
+            <div class="stat-card-footer">
+              <span>● Active student circulation</span>
+            </div>
+          </div>
+
+          <!-- Total Students -->
+          <div class="stat-card">
+            <div class="stat-card-header">
+              <span class="stat-card-title">Registered Students</span>
+              <div class="stat-card-icon">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#000" stroke-width="2.2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
+              </div>
+            </div>
+            <div class="stat-card-value" id="stat-students">0</div>
+            <div class="stat-card-footer">
+              <span>● Enrolled library borrowers</span>
+            </div>
+          </div>
+        </section>
+
+        <!-- Quick Actions Grid -->
+        <section class="quick-actions-bar">
+          <a href="books.html?action=add" class="action-card-btn">
+            <div class="action-icon-box" style="background:var(--yellow);">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#000" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+            </div>
+            <div class="action-card-text">
+              <span class="action-title">Add New Book</span>
+              <span class="action-desc">Insert title, author & copies</span>
+            </div>
+          </a>
+
+          <a href="students.html?action=register" class="action-card-btn">
+            <div class="action-icon-box" style="background:var(--purple);">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#000" stroke-width="2.5"><path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="8.5" cy="7" r="4"></circle><line x1="20" y1="8" x2="20" y2="14"></line><line x1="23" y1="11" x2="17" y2="11"></line></svg>
+            </div>
+            <div class="action-card-text">
+              <span class="action-title">Register Student</span>
+              <span class="action-desc">Enroll new library patron</span>
+            </div>
+          </a>
+
+          <a href="issue-return.html" class="action-card-btn">
+            <div class="action-icon-box" style="background:var(--mint);">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#000" stroke-width="2.5"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="12" y1="18" x2="12" y2="12"></line><line x1="9" y1="15" x2="15" y2="15"></line></svg>
+            </div>
+            <div class="action-card-text">
+              <span class="action-title">Issue Book</span>
+              <span class="action-desc">Assign book to student</span>
+            </div>
+          </a>
+
+          <a href="issue-return.html" class="action-card-btn">
+            <div class="action-icon-box" style="background:var(--pink);">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#000" stroke-width="2.5"><polyline points="1 4 1 10 7 10"></polyline><path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"></path></svg>
+            </div>
+            <div class="action-card-text">
+              <span class="action-title">Return Book</span>
+              <span class="action-desc">Check in & calculate late fine</span>
+            </div>
+          </a>
+        </section>
+
+        <!-- Two Column Dashboard Grid -->
+        <div class="dashboard-columns">
+          <!-- Recent Circulation Activity -->
+          <div class="neo-box">
+            <div class="neo-box-header">
+              <div class="neo-box-title-group">
+                <h2 class="neo-box-title">Recent Circulation Activity</h2>
+                <span class="neo-tag-badge">Live Sync</span>
+              </div>
+              <a href="issue-return.html" class="neo-btn btn-white btn-sm">View All →</a>
+            </div>
+            <div class="table-wrapper">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Book Title</th>
+                    <th>Student</th>
+                    <th>Roll No</th>
+                    <th>Issue Date</th>
+                    <th>Due Date</th>
+                    <th>Status</th>
+                  </tr>
+                </thead>
+                <tbody id="recent-tbody">
+                  <tr>
+                    <td colspan="6" class="loading">Loading circulation history...</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <!-- Catalog Snapshot -->
+          <div class="neo-box">
+            <div class="neo-box-header">
+              <div class="neo-box-title-group">
+                <h2 class="neo-box-title">Catalog Highlights</h2>
+                <span class="neo-tag-badge" style="background:var(--sky);">Inventory</span>
+              </div>
+              <a href="books.html" class="neo-btn btn-white btn-sm">Full Catalog →</a>
+            </div>
+            <div class="table-wrapper">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Book Details</th>
+                    <th>Type</th>
+                    <th>Copies</th>
+                    <th>Availability</th>
+                  </tr>
+                </thead>
+                <tbody id="popular-books-tbody">
+                  <tr>
+                    <td colspan="4" class="loading">Loading catalog highlights...</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </main>
+
+      <!-- Footer -->
+      <footer class="page-footer">
+        <div>
+          <span class="footer-brand">BookSphere</span> — Object-Oriented Library Management System (Core Java 17+ & MySQL 8)
+        </div>
+        <div class="font-mono text-xs">
+          College OOPs Lab Mini Project
+        </div>
+      </footer>
     </div>
-
-    <!-- 4 Neo-Brutalist Stat Cards -->
-    <section class="stats-grid">
-      <div class="stat-card">
-        <span class="stat-number" id="stat-total">0</span>
-        <span class="stat-label">Total Books</span>
-      </div>
-      <div class="stat-card">
-        <span class="stat-number" id="stat-avail">0</span>
-        <span class="stat-label">Available Books</span>
-      </div>
-      <div class="stat-card">
-        <span class="stat-number" id="stat-issued">0</span>
-        <span class="stat-label">Currently Issued</span>
-      </div>
-      <div class="stat-card">
-        <span class="stat-number" id="stat-students">0</span>
-        <span class="stat-label">Registered Students</span>
-      </div>
-    </section>
-
-    <!-- Quick Actions -->
-    <div class="quick-actions">
-      <a href="books.html" class="btn btn-primary">Manage Books →</a>
-      <a href="students.html" class="btn btn-secondary">Student Directory →</a>
-      <a href="issue-return.html" class="btn btn-success">Issue / Return Book →</a>
-    </div>
-
-    <!-- Recently Issued Table Card -->
-    <section class="card">
-      <div class="card-header">
-        <h2 class="card-title">Recently Issued Books</h2>
-      </div>
-      <div class="table-wrap">
-        <table>
-          <thead>
-            <tr>
-              <th>Book Title</th>
-              <th>Student</th>
-              <th>Roll No</th>
-              <th>Issue Date</th>
-              <th>Due Date</th>
-              <th>Status</th>
-            </tr>
-          </thead>
-          <tbody id="recent-tbody">
-            <tr>
-              <td colspan="6" class="loading">Loading records...</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-    </section>
-  </main>
-
-  <footer>
-    <p>LIBRO — Object-Oriented Library Management System (Core Java + MySQL)</p>
-  </footer>
+  </div>
 
   <script src="js/api.js"></script>
   <script src="js/common.js"></script>

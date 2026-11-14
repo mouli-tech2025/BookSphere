@@ -1,4 +1,4 @@
-# LIBRO — Object-Oriented Library Management System (Mini Project)
+# BookSphere — Object-Oriented Library Management System (Mini Project)
 
 An academic, production-quality, yet student-friendly **Library Management System** built with **Core Java 17+** and **MySQL 8**, featuring a high-impact **Neo-Brutalism UI**.
 
@@ -27,7 +27,7 @@ Designed specifically for college **Object-Oriented Programming (OOP) Lab Mini P
 
 ## 1. Project Overview
 
-**LIBRO** is a complete, working Library Management System developed without enterprise frameworks (no Spring Boot, no Hibernate, no Maven/Gradle, no Node.js, no frontend frameworks). 
+**BookSphere** is a complete, working Library Management System developed without enterprise frameworks (no Spring Boot, no Hibernate, no Maven/Gradle, no Node.js, no frontend frameworks). 
 
 Instead, it relies purely on the standard **JDK 17+** standard library (including `com.sun.net.httpserver.HttpServer`), pure **JDBC** with `PreparedStatement`, and standard web technologies (vanilla HTML5, CSS3, JavaScript `fetch`).
 

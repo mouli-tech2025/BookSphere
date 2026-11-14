@@ -8,7 +8,7 @@ setlocal enabledelayedexpansion
 cd /d "%~dp0"
 
 echo ==================================================
-echo   LIBRO — Library Management System
+echo   BookSphere — Library Management System
 echo ==================================================
 
 REM Check Java installation
