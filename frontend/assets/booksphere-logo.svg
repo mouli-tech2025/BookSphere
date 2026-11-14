@@ -1,0 +1,47 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" width="48" height="48" fill="none">
+  <defs>
+    <linearGradient id="sphereGrad" x1="15" y1="9" x2="33" y2="27" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#7DD3FC"/>
+      <stop offset="100%" stop-color="#0284C7"/>
+    </linearGradient>
+    <linearGradient id="orbitGrad" x1="6" y1="6" x2="42" y2="28" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#FFE600"/>
+      <stop offset="60%" stop-color="#86EFAC"/>
+      <stop offset="100%" stop-color="#7DD3FC"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Base Badge Background -->
+  <rect width="48" height="48" rx="8" fill="#111111"/>
+  <rect x="1" y="1" width="46" height="46" rx="7" stroke="#000000" stroke-width="1.5" fill="none"/>
+
+  <!-- Upper Celestial Orbital Ring -->
+  <path d="M 8 18 A 17 17 0 0 1 40 18" stroke="url(#orbitGrad)" stroke-width="2.5" stroke-linecap="round"/>
+
+  <!-- Central Digital Sphere -->
+  <circle cx="24" cy="18" r="9.5" fill="url(#sphereGrad)" stroke="#111111" stroke-width="1.8"/>
+  
+  <!-- Spherical Longitude & Latitude Coordinates -->
+  <ellipse cx="24" cy="18" rx="9.5" ry="3.6" fill="none" stroke="#FFFFFF" stroke-width="1.2" stroke-dasharray="3 2" opacity="0.85"/>
+  <path d="M 24 8.5 C 20.2 12, 20.2 24, 24 27.5 C 27.8 24, 27.8 12, 24 8.5 Z" fill="none" stroke="#FFFFFF" stroke-width="1.2" opacity="0.85"/>
+  
+  <!-- Digital Satellite Nodes -->
+  <circle cx="24" cy="6" r="2.2" fill="#FFE600" stroke="#111111" stroke-width="1.2"/>
+  <circle cx="8" cy="20" r="1.5" fill="#FFE600"/>
+  <circle cx="40" cy="20" r="1.5" fill="#86EFAC"/>
+
+  <!-- Open Book - Base Outer Pages (Crisp White) -->
+  <path d="M 24 39.5 C 18 36.5 11 37.5 7 39.5 C 5.8 40 4.8 39.2 4.8 37.8 L 5.8 25.2 C 11.5 23 18 22 24 25.8 Z" 
+        fill="#FFFFFF" stroke="#111111" stroke-width="1.8" stroke-linejoin="round"/>
+  <path d="M 24 39.5 C 30 36.5 37 37.5 41 39.5 C 42.2 40 43.2 39.2 43.2 37.8 L 42.2 25.2 C 36.5 23 30 22 24 25.8 Z" 
+        fill="#FFFFFF" stroke="#111111" stroke-width="1.8" stroke-linejoin="round"/>
+
+  <!-- Open Book - Inner Layer Pages (Canary Yellow #FFE600) -->
+  <path d="M 24 36.8 C 18.5 34.5 12 35.2 8.5 37 L 9.2 27.2 C 14 25.2 19 24.5 24 27 Z" 
+        fill="#FFE600" stroke="#111111" stroke-width="1.5" stroke-linejoin="round"/>
+  <path d="M 24 36.8 C 29.5 34.5 36 35.2 39.5 37 L 38.8 27.2 C 34 25.2 29 24.5 24 27 Z" 
+        fill="#FFE600" stroke="#111111" stroke-width="1.5" stroke-linejoin="round"/>
+
+  <!-- Book Spine Center Anchor -->
+  <path d="M 24 26.5 L 24 39.5" stroke="#111111" stroke-width="2.2" stroke-linecap="round"/>
+</svg>
