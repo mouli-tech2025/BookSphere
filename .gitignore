@@ -38,3 +38,12 @@ venv/
 # Compiled Java output
 out/
 *.class
+# Database credentials
+db.properties
+
+# VS Code / Antigravity
+.vscode/
+
+# Compiled Java files
+out/
+*.class
