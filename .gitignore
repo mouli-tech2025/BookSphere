@@ -1,1 +1,40 @@
 db.properties
+# VS Code / Antigravity settings
+.vscode/
+
+# Database credentials
+db.properties
+
+# Compiled Java files
+*.class
+out/
+bin/
+
+# Java build files
+target/
+
+# Logs
+*.log
+
+# OS generated files
+.DS_Store
+Thumbs.db
+
+# IDE settings
+.idea/
+.vscode/
+*.iml
+
+# Temporary files
+*.tmp
+*.swp
+*~
+
+# Python (if any helper scripts are used)
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+# Compiled Java output
+out/
+*.class
