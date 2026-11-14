@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LIBRO — Issue & Return Operations</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=Archivo+Black&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <nav class="navbar">
+    <div class="navbar-logo">LIBRO</div>
+    <ul class="navbar-links">
+      <li><a href="dashboard.html">Dashboard</a></li>
+      <li><a href="books.html">Books</a></li>
+      <li><a href="students.html">Students</a></li>
+      <li><a href="issue-return.html" class="active">Issue & Return</a></li>
+    </ul>
+  </nav>
+
+  <main class="container">
+    <div class="page-header">
+      <h1 class="page-title">Circulation Desk</h1>
+    </div>
+
+    <!-- Issue Form Card -->
+    <section class="card">
+      <div class="card-header">
+        <h2 class="card-title">Issue Book to Student</h2>
+      </div>
+      <form id="issue-form">
+        <div class="issue-panels">
+          <div class="form-group">
+            <label for="f-student">Select Student *</label>
+            <select id="f-student" required>
+              <option value="">Loading students...</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="f-book">Select Book (Only Available Shown) *</label>
+            <select id="f-book" required>
+              <option value="">Loading books...</option>
+            </select>
+            <div id="avail-hint" class="availability-hint"></div>
+          </div>
+        </div>
+        <div>
+          <button type="submit" class="btn btn-primary">Confirm Book Issue</button>
+        </div>
+      </form>
+    </section>
+
+    <!-- Issue Records Table Card -->
+    <section class="card">
+      <div class="card-header">
+        <h2 class="card-title">Circulation & Issue History</h2>
+        <div style="min-width: 200px;">
+          <select id="status-filter">
+            <option value="">All Transactions</option>
+            <option value="ISSUED">Currently ISSUED</option>
+            <option value="RETURNED">RETURNED</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Book Title</th>
+              <th>Student Name</th>
+              <th>Roll Number</th>
+              <th>Issue Date</th>
+              <th>Due Date</th>
+              <th>Return Date</th>
+              <th>Fine</th>
+              <th>Status / Action</th>
+            </tr>
+          </thead>
+          <tbody id="issues-tbody">
+            <tr>
+              <td colspan="8" class="loading">Loading circulation records...</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <p>LIBRO — Object-Oriented Library Management System (Core Java + MySQL)</p>
+  </footer>
+
+  <script src="js/api.js"></script>
+  <script src="js/common.js"></script>
+  <script src="js/issue-return.js"></script>
+</body>
+</html>

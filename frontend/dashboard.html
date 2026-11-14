@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LIBRO — Dashboard</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=Archivo+Black&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <!-- Top Navigation -->
+  <nav class="navbar">
+    <div class="navbar-logo">LIBRO</div>
+    <ul class="navbar-links">
+      <li><a href="dashboard.html" class="active">Dashboard</a></li>
+      <li><a href="books.html">Books</a></li>
+      <li><a href="students.html">Students</a></li>
+      <li><a href="issue-return.html">Issue & Return</a></li>
+    </ul>
+  </nav>
+
+  <!-- Main Container -->
+  <main class="container">
+    <div class="page-header">
+      <h1 class="page-title">Library Overview</h1>
+    </div>
+
+    <!-- 4 Neo-Brutalist Stat Cards -->
+    <section class="stats-grid">
+      <div class="stat-card">
+        <span class="stat-number" id="stat-total">0</span>
+        <span class="stat-label">Total Books</span>
+      </div>
+      <div class="stat-card">
+        <span class="stat-number" id="stat-avail">0</span>
+        <span class="stat-label">Available Books</span>
+      </div>
+      <div class="stat-card">
+        <span class="stat-number" id="stat-issued">0</span>
+        <span class="stat-label">Currently Issued</span>
+      </div>
+      <div class="stat-card">
+        <span class="stat-number" id="stat-students">0</span>
+        <span class="stat-label">Registered Students</span>
+      </div>
+    </section>
+
+    <!-- Quick Actions -->
+    <div class="quick-actions">
+      <a href="books.html" class="btn btn-primary">Manage Books →</a>
+      <a href="students.html" class="btn btn-secondary">Student Directory →</a>
+      <a href="issue-return.html" class="btn btn-success">Issue / Return Book →</a>
+    </div>
+
+    <!-- Recently Issued Table Card -->
+    <section class="card">
+      <div class="card-header">
+        <h2 class="card-title">Recently Issued Books</h2>
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Book Title</th>
+              <th>Student</th>
+              <th>Roll No</th>
+              <th>Issue Date</th>
+              <th>Due Date</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody id="recent-tbody">
+            <tr>
+              <td colspan="6" class="loading">Loading records...</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <p>LIBRO — Object-Oriented Library Management System (Core Java + MySQL)</p>
+  </footer>
+
+  <script src="js/api.js"></script>
+  <script src="js/common.js"></script>
+  <script src="js/dashboard.js"></script>
+</body>
+</html>

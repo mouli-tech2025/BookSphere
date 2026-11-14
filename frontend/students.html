@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LIBRO — Students Directory</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=Archivo+Black&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <nav class="navbar">
+    <div class="navbar-logo">LIBRO</div>
+    <ul class="navbar-links">
+      <li><a href="dashboard.html">Dashboard</a></li>
+      <li><a href="books.html">Books</a></li>
+      <li><a href="students.html" class="active">Students</a></li>
+      <li><a href="issue-return.html">Issue & Return</a></li>
+    </ul>
+  </nav>
+
+  <main class="container">
+    <div class="page-header">
+      <h1 class="page-title">Registered Students</h1>
+      <button class="btn btn-primary" onclick="openModal('student-modal')">+ Register Student</button>
+    </div>
+
+    <section class="card">
+      <div class="search-bar">
+        <input type="text" id="search-query" placeholder="Search by student name, roll number, or department...">
+      </div>
+
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Full Name</th>
+              <th>Email Address</th>
+              <th>Contact Phone</th>
+              <th>Roll Number</th>
+              <th>Department</th>
+            </tr>
+          </thead>
+          <tbody id="students-tbody">
+            <tr>
+              <td colspan="5" class="loading">Loading student records...</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+  </main>
+
+  <!-- Register Student Modal -->
+  <div id="student-modal" class="modal-overlay hidden">
+    <div class="modal">
+      <div class="modal-header">
+        <h2 class="modal-title">Register New Student</h2>
+        <button class="modal-close" onclick="closeModal('student-modal')">✕</button>
+      </div>
+      <form id="student-form">
+        <div class="form-group">
+          <label for="f-name">Student Full Name *</label>
+          <input type="text" id="f-name" required placeholder="e.g. Rahul Sharma">
+        </div>
+        <div class="form-group">
+          <label for="f-email">Email Address (@ and .) *</label>
+          <input type="email" id="f-email" required placeholder="e.g. rahul.s@college.edu">
+        </div>
+        <div class="form-group">
+          <label for="f-phone">Phone Number (10 Digits) *</label>
+          <input type="tel" id="f-phone" pattern="\d{10}" required placeholder="e.g. 9876543210">
+        </div>
+        <div class="form-group">
+          <label for="f-rollno">Roll Number (Unique) *</label>
+          <input type="text" id="f-rollno" required placeholder="e.g. 21CS045">
+        </div>
+        <div class="form-group">
+          <label for="f-dept">Department *</label>
+          <input type="text" id="f-dept" required placeholder="e.g. CSE, ECE, IT, MECH">
+        </div>
+        <div class="form-actions">
+          <button type="submit" class="btn btn-primary">Register</button>
+          <button type="button" class="btn btn-secondary" onclick="closeModal('student-modal')">Cancel</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <footer>
+    <p>LIBRO — Object-Oriented Library Management System (Core Java + MySQL)</p>
+  </footer>
+
+  <script src="js/api.js"></script>
+  <script src="js/common.js"></script>
+  <script src="js/students.js"></script>
+</body>
+</html>

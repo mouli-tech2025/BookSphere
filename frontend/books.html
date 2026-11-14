@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LIBRO — Books Catalog</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=Archivo+Black&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <nav class="navbar">
+    <div class="navbar-logo">LIBRO</div>
+    <ul class="navbar-links">
+      <li><a href="dashboard.html">Dashboard</a></li>
+      <li><a href="books.html" class="active">Books</a></li>
+      <li><a href="students.html">Students</a></li>
+      <li><a href="issue-return.html">Issue & Return</a></li>
+    </ul>
+  </nav>
+
+  <main class="container">
+    <div class="page-header">
+      <h1 class="page-title">Books Inventory</h1>
+      <button class="btn btn-primary" onclick="openAdd()">+ Add New Book</button>
+    </div>
+
+    <section class="card">
+      <div class="search-bar">
+        <input type="text" id="search-query" placeholder="Search by title, author, or ISBN...">
+        <select id="search-category">
+          <option value="">All Categories</option>
+          <option value="Computer Science">Computer Science</option>
+          <option value="Programming">Programming</option>
+          <option value="Electronics">Electronics</option>
+          <option value="Mathematics">Mathematics</option>
+          <option value="Fiction">Fiction</option>
+          <option value="Biography">Biography</option>
+          <option value="Self Help">Self Help</option>
+        </select>
+      </div>
+
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Title</th>
+              <th>Author</th>
+              <th>ISBN</th>
+              <th>Category</th>
+              <th>Type</th>
+              <th>Availability</th>
+              <th>Loan & Fine Policy</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody id="books-tbody">
+            <tr>
+              <td colspan="8" class="loading">Loading catalog...</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+  </main>
+
+  <!-- Add / Edit Modal -->
+  <div id="book-modal" class="modal-overlay hidden">
+    <div class="modal">
+      <div class="modal-header">
+        <h2 class="modal-title" id="modal-title">Add New Book</h2>
+        <button class="modal-close" onclick="closeModal('book-modal')">✕</button>
+      </div>
+      <form id="book-form">
+        <div class="form-group">
+          <label for="f-title">Book Title *</label>
+          <input type="text" id="f-title" required placeholder="e.g. Clean Architecture">
+        </div>
+        <div class="form-group">
+          <label for="f-author">Author *</label>
+          <input type="text" id="f-author" required placeholder="e.g. Robert C. Martin">
+        </div>
+        <div class="form-group">
+          <label for="f-isbn">ISBN *</label>
+          <input type="text" id="f-isbn" required placeholder="e.g. 9780134494166">
+        </div>
+        <div class="form-group">
+          <label for="f-category">Category *</label>
+          <input type="text" id="f-category" required placeholder="e.g. Computer Science">
+        </div>
+        <div class="form-group">
+          <label for="f-type">Book Type (Polymorphism) *</label>
+          <select id="f-type" required>
+            <option value="TEXTBOOK">TEXTBOOK (30 days loan period, ₹1/day fine)</option>
+            <option value="NOVEL">NOVEL (14 days loan period, ₹2/day fine)</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="f-copies">Total Copies *</label>
+          <input type="number" id="f-copies" min="1" required placeholder="e.g. 5">
+        </div>
+        <div class="form-actions">
+          <button type="submit" class="btn btn-primary">Save Book</button>
+          <button type="button" class="btn btn-secondary" onclick="closeModal('book-modal')">Cancel</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <footer>
+    <p>LIBRO — Object-Oriented Library Management System (Core Java + MySQL)</p>
+  </footer>
+
+  <script src="js/api.js"></script>
+  <script src="js/common.js"></script>
+  <script src="js/books.js"></script>
+</body>
+</html>
