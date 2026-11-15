@@ -47,3 +47,5 @@ db.properties
 # Compiled Java files
 out/
 *.class
+
+.env.docker

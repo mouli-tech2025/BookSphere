@@ -1,0 +1,9 @@
+
+.git
+.github
+.vscode
+out/
+*.class
+db.properties
+.DS_Store
+.env.docker

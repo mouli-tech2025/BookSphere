@@ -15,7 +15,9 @@ import java.sql.SQLException;
  */
 public class Main {
 
-    private static final int PORT = 8080;
+    private static final int PORT = Integer.parseInt(
+    System.getenv().getOrDefault("PORT", "8080")
+);
 
     public static void main(String[] args) {
 
@@ -68,6 +70,14 @@ public class Main {
 
         server.setExecutor(java.util.concurrent.Executors.newFixedThreadPool(10));
         server.start();
+        Runtime.getRuntime().addShutdownHook(new Thread(() -> {
+    System.out.println("\nShutting down BookSphere...");
+
+    server.stop(1);
+    DBConnection.closePool();
+
+    System.out.println("Database connection pool closed.");
+}));
 
         System.out.println("\u2554\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2557");
         System.out.println("\u2551   Library Management System \u2014 Server Running  \u2551");
