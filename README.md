@@ -82,19 +82,14 @@ Most tutorials rely on Spring Boot or Hibernate, which hide how things really wo
 
 ## 🖼️ Screenshots
 
-> Replace each placeholder path with your own image (e.g. save images in a `screenshots/` folder).
 
-### Dashboard
-![Dashboard](screenshots/dashboard.png)
+| Dashboard | Book Catalog |
+|:---:|:---:|
+| ![Dashboard](screenshots/dashboard.png) | ![Book Catalog](screenshots/books.png) |
 
-### Book Catalog
-![Book Catalog](screenshots/books.png)
-
-### Student Directory
-![Student Directory](screenshots/students.png)
-
-### Circulation Desk
-![Circulation Desk](screenshots/issue-return.png)
+| Student Directory | Circulation Desk |
+|:---:|:---:|
+| ![Student Directory](screenshots/students.png) | ![Circulation Desk](screenshots/issue-return.png) |
 
 ### OOP Demo (Console Output)
 ![OOP Demo](screenshots/oop-demo.png)
