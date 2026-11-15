@@ -1,433 +1,372 @@
-# BookSphere — Object-Oriented Library Management System (Mini Project)
 
-An academic, production-quality, yet student-friendly **Library Management System** built with **Core Java 17+** and **MySQL 8**, featuring a high-impact **Neo-Brutalism UI**.
 
-Designed specifically for college **Object-Oriented Programming (OOP) Lab Mini Projects**, viva demonstrations, and technical examinations.
+# 📚 BookSphere – Object-Oriented Library Management System
+
+[![Java](https://img.shields.io/badge/Java-17%2B%20%7C%2025-ED8B00?style=for-the-badge&logo=openjdk&logoColor=white)](https://www.oracle.com/java/)
+[![MySQL](https://img.shields.io/badge/MySQL-8.0%2B-4479A1?style=for-the-badge&logo=mysql&logoColor=white)](https://www.mysql.com/)
+[![Docker](https://img.shields.io/badge/Docker-Multi--Stage-2496ED?style=for-the-badge&logo=docker&logoColor=white)](https://www.docker.com/)
+[![HikariCP](https://img.shields.io/badge/HikariCP-6.3.0-FF6B6B?style=for-the-badge)](https://github.com/brettwooldridge/HikariCP)
+[![Live Demo](https://img.shields.io/badge/Render-Live%20Demo-46E3B7?style=for-the-badge&logo=render&logoColor=white)](https://booksphere-6gam.onrender.com/)
+
+
+A **Library Management System** built with **Core Java**, **JDBC + MySQL** and a **Neo-Brutalism web interface** — no frameworks, no ORM. Created as a college **OOP Lab Mini Project** to demonstrate all seven core OOP concepts in a real, working application.
+
+🔗 **Live Demo:** [https://booksphere-6gam.onrender.com/](https://booksphere-6gam.onrender.com/)
+> Free-tier hosting may take ~30–50 seconds to wake up on the first request.
 
 ---
 
 ## 📑 Table of Contents
-1. [Project Overview](#project-overview)
-2. [Key Features](#key-features)
-3. [Strict Technology Stack](#strict-technology-stack)
-4. [Project Folder Structure](#project-folder-structure)
-5. [Prerequisites](#prerequisites)
-6. [Step-by-Step Setup Guide](#step-by-step-setup-guide)
-7. [Running the Application](#running-the-application)
-8. [Running the Standalone OOP Demo](#running-the-standalone-oop-demo)
-9. [REST API Endpoints Specification](#rest-api-endpoints-specification)
-10. [Mapping the 7 OOP Concepts to Code](#mapping-the-7-oop-concepts-to-code)
-11. [Class Relationship Diagram (ASCII)](#class-relationship-diagram-ascii)
-12. [How Polymorphism & Factory Method Work](#how-polymorphism--factory-method-work)
-13. [Sample Demo Flow for Viva & Evaluation](#sample-demo-flow-for-viva--evaluation)
-14. [10 Likely Viva Questions & Answers](#10-likely-viva-questions--answers)
-15. [Troubleshooting Guide](#troubleshooting-guide)
+
+1. [Overview](#-overview)
+2. [Features](#-features)
+3. [Screenshots](#-screenshots)
+4. [Tech Stack & Tools](#-tech-stack--tools)
+5. [OOP Concepts Implemented](#-oop-concepts-implemented)
+6. [Architecture & Workflow](#-architecture--workflow)
+7. [Project Structure](#-project-structure)
+8. [Database Design](#-database-design)
+9. [Getting Started](#-getting-started)
+10. [Docker & Deployment](#-docker--deployment)
+11. [Environment Variables](#-environment-variables)
+12. [Future Improvements](#-future-improvements)
+13. [Author](#-author)
 
 ---
 
-## 1. Project Overview
+## 🎯 Overview
 
-**BookSphere** is a complete, working Library Management System developed without enterprise frameworks (no Spring Boot, no Hibernate, no Maven/Gradle, no Node.js, no frontend frameworks). 
+Most tutorials rely on Spring Boot or Hibernate, which hide how things really work. **BookSphere** does the opposite:
 
-Instead, it relies purely on the standard **JDK 17+** standard library (including `com.sun.net.httpserver.HttpServer`), pure **JDBC** with `PreparedStatement`, and standard web technologies (vanilla HTML5, CSS3, JavaScript `fetch`).
+- **Pure Core Java** – uses only the standard library and the built-in `com.sun.net.httpserver.HttpServer`.
+- **Pure JDBC** – every query is a hand-written `PreparedStatement` (SQL-injection safe, manual transactions).
+- **Custom utilities** – `JsonBuilder`, `FormParser` and `Validator` replace Jackson/Gson/Lombok.
+- **HikariCP connection pooling** – fast, thread-safe database connections.
+- **Single-port design** – port `8080` serves both the frontend and the `/api/*` routes, so there are no CORS issues and only one command to run.
 
-### Architecture: 4-Layer Separation of Concerns
-```text
-┌────────────────────────────────────────────────────────┐
-│               Browser (HTML5 / CSS3 / JS)              │
-└───────────────────────────┬────────────────────────────┘
-                            │ HTTP Request (Form-UrlEncoded)
-                            ▼
-┌────────────────────────────────────────────────────────┐
-│     Handler Layer (BaseHandler, BookHandler, etc.)      │
-└───────────────────────────┬────────────────────────────┘
-                            │ Java Method Invocations
-                            ▼
-┌────────────────────────────────────────────────────────┐
-│     Service Layer (BookService, IssueService, etc.)    │
-│            * Business rules & validation *             │
-└───────────────────────────┬────────────────────────────┘
-                            │ POJOs / Exception Handling
-                            ▼
-┌────────────────────────────────────────────────────────┐
-│       DAO Layer (BookDao, StudentDao, IssueDao)        │
-│          * PreparedStatement & Transactions *          │
-└───────────────────────────┬────────────────────────────┘
-                            │ Plain JDBC
-                            ▼
-┌────────────────────────────────────────────────────────┐
-│                      MySQL 8 Database                  │
-└────────────────────────────────────────────────────────┘
+---
+
+## ✨ Features
+
+**📊 Dashboard**
+- Live stats: total books, available copies, active issues, registered students.
+- Recent circulation activity and quick-action shortcuts.
+
+**📚 Book Catalog**
+- Full CRUD with protection against deleting books that are currently issued.
+- Two book types with different policies:
+
+  | Type | Loan Period | Late Fine |
+  |---|---|---|
+  | **Textbook** | 30 days | ₹1.00 / day |
+  | **Novel** | 14 days | ₹2.00 / day |
+
+- Search by title, author or ISBN, plus category filtering.
+- Automatic tracking of total vs. available copies.
+
+**👥 Student Directory**
+- Registration with validation (10-digit phone, email format, unique roll number & email).
+- Search by name, roll number or department.
+
+**🔄 Circulation Desk (Issue & Return)**
+- **Atomic transactions** – issue record + stock update succeed or fail together (`commit` / `rollback`).
+- **Borrowing limit** – max 3 active loans per student.
+- **Duplicate-issue prevention** and **zero-stock guard**.
+- **Polymorphic fine calculation** – no `if/else` on book type.
+
+**🎨 Neo-Brutalism UI**
+- Bold borders, hard shadows, high-contrast colors.
+- Responsive collapsible sidebar (state saved in `localStorage`), custom SVG logo and favicon set.
+
+---
+
+## 🖼️ Screenshots
+
+> Replace each placeholder path with your own image (e.g. save images in a `screenshots/` folder).
+
+### Dashboard
+![Dashboard](screenshots/dashboard.png)
+
+### Book Catalog
+![Book Catalog](screenshots/books.png)
+
+### Student Directory
+![Student Directory](screenshots/students.png)
+
+### Circulation Desk
+![Circulation Desk](screenshots/issue-return.png)
+
+### OOP Demo (Console Output)
+![OOP Demo](screenshots/oop-demo.png)
+
+| Page | Live Route |
+|---|---|
+| Dashboard | [`/dashboard.html`](https://booksphere-6gam.onrender.com/dashboard.html) |
+| Book Catalog | [`/books.html`](https://booksphere-6gam.onrender.com/books.html) |
+| Student Directory | [`/students.html`](https://booksphere-6gam.onrender.com/students.html) |
+| Circulation Desk | [`/issue-return.html`](https://booksphere-6gam.onrender.com/issue-return.html) |
+
+---
+
+## 🛠️ Tech Stack & Tools
+
+| Category | Technology | Details |
+|---|---|---|
+| **Language** | Core Java 17+ | Tested on JDK 25; production runs on Eclipse Temurin 25 |
+| **Web Server** | `com.sun.net.httpserver.HttpServer` | Built into the JDK, fixed thread pool (`Executors.newFixedThreadPool(10)`) |
+| **Database** | MySQL 8.0+ | Local; TiDB Serverless Cloud used for deployment |
+| **DB Access** | JDBC (`PreparedStatement`) | No ORM, manual transaction control |
+| **JDBC Driver** | MySQL Connector/J `26.10.0` | Official MySQL driver |
+| **Connection Pool** | HikariCP `6.3.0` | Uses SLF4J API `2.0.17` for logging |
+| **JSON / Parsing** | Custom `JsonBuilder`, `FormParser` | Zero external dependencies |
+| **Frontend** | HTML5, CSS3, Vanilla JavaScript (ES6+) | `fetch` API, `async/await`, `localStorage`, Flexbox, CSS Grid |
+| **Assets** | SVG, PNG, ICO | Custom logo and favicon set |
+| **Containerization** | Docker (multi-stage) | `eclipse-temurin:25-jdk` (build) → `eclipse-temurin:25-jre` (runtime) |
+| **Hosting** | Render | Docker web service |
+| **Scripts** | `run.sh`, `run.bat` | One-click compile & run (Linux/macOS & Windows) |
+| **Version Control** | Git & GitHub | Source hosting |
+
+---
+
+## 🧩 OOP Concepts Implemented
+
+| # | Concept | Where It's Used | Role |
+|---|---|---|---|
+| 1 | **Classes & Objects** | `Person`, `Student`, `LibraryItem`, `TextBook`, `Novel`, `IssueRecord` | Real-world entities as Java objects |
+| 2 | **Encapsulation** | `Person`, `LibraryItem`, `IssueRecord` | Private fields with validating setters |
+| 3 | **Inheritance** | `Student → Person`, `TextBook / Novel → LibraryItem`, `*Handler → BaseHandler` | Code reuse via `extends` / `super()` |
+| 4 | **Polymorphism** | Overriding: `calculateFine()`, `getLoanPeriodDays()`; Overloading: `BookService.search()` | Runtime dispatch & compile-time overloading |
+| 5 | **Abstraction** | `abstract Person`, `abstract LibraryItem`, `abstract BaseHandler`, `interface Searchable<T>` | Contracts without implementation details |
+| 6 | **Collections** | `ArrayList`, `List<T>`, `LinkedHashMap`, `Comparator.comparing` | Data storage, sorting, ordered metrics |
+| 7 | **Exception Handling** | Custom `LibraryException` hierarchy, `try-with-resources` | Clean error handling & auto resource closing |
+
+### Key Code Snippets
+
+**Encapsulation** – defensive setter:
+```java
+public void setTotalCopies(int totalCopies) throws InvalidInputException {
+    if (totalCopies < 0) {
+        throw new InvalidInputException("Total copies cannot be negative.");
+    }
+    this.totalCopies = totalCopies;
+}
 ```
 
-The single Java HTTP server on port `8080` serves both the static frontend files (`/` serves `frontend/`) and the dynamic JSON REST APIs (`/api/*`), avoiding CORS issues and simplifying local deployment to a single command.
+**Polymorphism** – each subclass defines its own policy:
+```java
+// TextBook.java
+@Override public int getLoanPeriodDays() { return 30; }
+@Override public double calculateFine(long daysLate) { return daysLate > 0 ? daysLate * 1.0 : 0.0; }
+
+// Novel.java
+@Override public int getLoanPeriodDays() { return 14; }
+@Override public double calculateFine(long daysLate) { return daysLate > 0 ? daysLate * 2.0 : 0.0; }
+```
+`IssueService` simply calls `item.calculateFine(daysLate)` — no `instanceof` checks. `BookDao.createItem(ResultSet)` acts as a factory, returning the right subclass based on the `book_type` column.
+
+**Overloading** – two search signatures:
+```java
+public List<LibraryItem> search(String keyword) throws SQLException;
+public List<LibraryItem> search(String keyword, String category) throws SQLException;
+```
+
+**Abstraction** – generic interface:
+```java
+public interface Searchable<T> {
+    List<T> search(String keyword) throws SQLException;
+}
+```
+
+**Exception hierarchy** (all extend the checked `LibraryException`): `BookNotFoundException`, `StudentNotFoundException`, `BookNotAvailableException`, `DuplicateEntryException`, `InvalidInputException`. Handlers map them to HTTP `400`, `404` and `500` responses.
 
 ---
 
-## 2. Key Features
+## 🏗️ Architecture & Workflow
 
-- **Dashboard**: Live metrics showing Total Books, Available Copies, Active Issues, and Registered Students, along with a recent circulation history table.
-- **Book Management**: Full CRUD (Create, Read, Update, Delete) with search by title/author/ISBN, category filtering, and real-time availability badges.
-- **Student Directory**: Student registration with strict validation (10-digit phone number, valid university email format, unique roll number).
-- **Circulation Desk (Issue & Return)**:
-  - Atomic transactions using JDBC `setAutoCommit(false)`, `commit()`, and `rollback()`.
-  - Student circulation quota enforcement (maximum 3 active issued books per student).
-  - Duplicate issue prevention (cannot issue the same book twice to the same student).
-  - Dynamic due date generation based on book classification (TextBook: 30 days, Novel: 14 days).
-  - Polymorphic late fine calculation (TextBook: ₹1.00/day, Novel: ₹2.00/day).
-- **Neo-Brutalism UI**: Bold aesthetics, high-contrast borders (`3px solid #111`), offset drop-shadows (`6px 6px 0 #111`), responsive grid layout, and interactive toasts.
-
----
-
-## 3. Strict Technology Stack
-
-- **Backend**: Core Java 17+ (JDK standard library only, `com.sun.net.httpserver.HttpServer`)
-- **Database**: MySQL 8.x
-- **Database Access**: Plain JDBC using `PreparedStatement`
-- **External JAR**: MySQL Connector/J driver (`lib/mysql-connector-j-*.jar`)
-- **Frontend**: Vanilla HTML5, CSS3 (Neo-Brutalism Design System), Vanilla JavaScript (Native `fetch` API)
-- **Zero Third-Party Frameworks**: No Spring, No Hibernate, No Maven, No Gradle, No npm, No React, No Lombok, No Jackson/Gson.
-
----
-
-## 4. Project Folder Structure
+BookSphere follows a clean **layered architecture**:
 
 ```text
-LibraryManagementSystem/
-├── README.md                           # Documentation & Viva preparation
-├── schema.sql                          # MySQL database schema & sample dataset
-├── db.properties                       # Database credentials config
-├── run.bat                             # Windows 1-click compile & run script
-├── run.sh                              # Linux / macOS 1-click compile & run script
-├── lib/
-│   └── mysql-connector-j-26.10.0.jar   # MySQL JDBC Driver JAR
+Browser (HTML / CSS / JS)
+        │  HTTP (JSON / URL-encoded)
+        ▼
+Handler Layer   → BaseHandler, BookHandler, StudentHandler, IssueHandler, DashboardHandler
+        ▼
+Service Layer   → BookService, StudentService, IssueService, DashboardService
+        ▼         (business rules, validation, quotas, fines)
+DAO Layer       → BookDao, StudentDao, IssueDao
+        ▼         (PreparedStatements, transactions)
+HikariCP Pool → MySQL (students, books, issue_records)
+```
+
+**Workflow: issuing a book** (`POST /api/issue`)
+1. `IssueHandler` reads the parameters and calls `IssueService.issueBook(studentId, bookId)`.
+2. The service checks: student exists → fewer than 3 active loans → no duplicate loan → copies available.
+3. Due date is computed polymorphically: `today.plusDays(item.getLoanPeriodDays())`.
+4. `IssueDao` runs one transaction: insert into `issue_records` → decrement `available_copies` → `commit`.
+5. A JSON success response is returned and the UI shows a toast.
+
+---
+
+## 📁 Project Structure
+
+```text
+BookSphere/
+├── Dockerfile              # Multi-stage build
+├── schema.sql              # Database schema + seed data
+├── db.properties           # Local DB config (fallback)
+├── .env.docker             # Docker env template
+├── run.sh / run.bat        # One-click run scripts
+├── lib/                    # HikariCP, MySQL Connector/J, SLF4J API jars
 ├── src/com/library/
-│   ├── Main.java                       # Server entry point & route registration
-│   ├── model/                          # OOP Entities (Encapsulation & Inheritance)
-│   │   ├── Person.java                 # Abstract base class
-│   │   ├── Student.java                # Concrete subclass of Person
-│   │   ├── LibraryItem.java            # Abstract base class for books
-│   │   ├── TextBook.java               # Concrete subclass (30 days, ₹1/day)
-│   │   ├── Novel.java                  # Concrete subclass (14 days, ₹2/day)
-│   │   └── IssueRecord.java            # Circulation entity
-│   ├── exception/                      # Custom checked exception hierarchy
-│   │   ├── LibraryException.java       # Base checked exception
-│   │   ├── BookNotFoundException.java
-│   │   ├── StudentNotFoundException.java
-│   │   ├── BookNotAvailableException.java
-│   │   ├── DuplicateEntryException.java
-│   │   └── InvalidInputException.java
-│   ├── dao/                            # Data Access Objects (JDBC & SQL)
-│   │   ├── DBConnection.java           # Reads db.properties, supplies Connection
-│   │   ├── BookDao.java                # Polymorphic Factory Method & CRUD
-│   │   ├── StudentDao.java             # Student queries & registration
-│   │   └── IssueDao.java               # Atomic circulation transactions
-│   ├── service/                        # Business logic & Validation
-│   │   ├── Searchable.java             # Generic interface abstraction
-│   │   ├── BookService.java            # Overloaded search & book rules
-│   │   ├── StudentService.java         # Student search & validation
-│   │   ├── IssueService.java           # Fine calculation & issue quota checks
-│   │   └── DashboardService.java       # LinkedHashMap aggregation metrics
-│   ├── handler/                        # HTTP endpoints & routing
-│   │   ├── BaseHandler.java            # Abstract HTTP handler with helper methods
-│   │   ├── DashboardHandler.java       # /api/dashboard endpoint
-│   │   ├── BookHandler.java            # /api/books endpoints
-│   │   ├── StudentHandler.java         # /api/students endpoints
-│   │   ├── IssueHandler.java           # /api/issue, /api/return, /api/issues
-│   │   └── StaticFileHandler.java      # Serves frontend static assets
-│   ├── util/                           # Helper utilities
-│   │   ├── JsonBuilder.java            # Handcrafted JSON builder
-│   │   ├── FormParser.java             # URL-encoded query and body parser
-│   │   └── Validator.java              # Static input validation routines
-│   └── demo/
-│       └── OopDemo.java                # Console demo testing all 7 OOP concepts
+│   ├── Main.java           # Server bootstrap & routing
+│   ├── dao/                # BookDao, StudentDao, IssueDao, DBConnection
+│   ├── model/              # Person, Student, LibraryItem, TextBook, Novel, IssueRecord
+│   ├── service/            # BookService, StudentService, IssueService, DashboardService, Searchable
+│   ├── handler/            # BaseHandler, Book/Student/Issue/Dashboard/StaticFile handlers
+│   ├── exception/          # LibraryException + 5 custom exceptions
+│   ├── util/               # JsonBuilder, FormParser, Validator
+│   └── demo/OopDemo.java   # Offline demo of all 7 OOP concepts
 └── frontend/
-    ├── dashboard.html                  # Landing page & statistical overview
-    ├── books.html                      # Book catalog with search & modals
-    ├── students.html                   # Student roster & registration modal
-    ├── issue-return.html               # Circulation desk interface
-    ├── css/
-    │   └── style.css                   # Unified Neo-Brutalism design system
-    └── js/
-        ├── api.js                      # Fetch API wrapper
-        ├── common.js                   # Navigation, toast & modal helpers
-        ├── dashboard.js                # Dashboard API integration
-        ├── books.js                    # Books API integration
-        ├── students.js                 # Students API integration
-        └── issue-return.js             # Issue/Return API integration
+    ├── *.html              # dashboard, books, students, issue-return
+    ├── css/style.css       # Neo-Brutalism design system
+    ├── js/                 # api, common, dashboard, books, students, issue-return
+    └── assets/             # Logo and favicons
 ```
 
 ---
 
-## 5. Prerequisites
+## 🗄️ Database Design
 
-Before running the project, ensure you have:
-1. **JDK 17 or higher** installed. Verify with:
-   ```bash
-   javac -version
-   java -version
-   ```
-2. **MySQL Server 8.0+** running locally. Verify with:
-   ```bash
-   mysql --version
-   ```
+Database: `library_db` — 3 tables in 3NF.
+
+| Table | Key Columns | Constraints |
+|---|---|---|
+| **students** | `student_id`, `name`, `email`, `phone`, `roll_no`, `department`, `created_at` | `email` UNIQUE, `roll_no` UNIQUE |
+| **books** | `book_id`, `title`, `author`, `isbn`, `category`, `book_type`, `total_copies`, `available_copies`, `created_at` | `isbn` UNIQUE, `book_type ENUM('TEXTBOOK','NOVEL')`, `CHECK (available_copies >= 0)` |
+| **issue_records** | `issue_id`, `book_id`, `student_id`, `issue_date`, `due_date`, `return_date`, `fine`, `status` | FKs to `books` and `students` with `ON DELETE RESTRICT`; `status ENUM('ISSUED','RETURNED')` |
+
+**Relationships:** one student → many issue records; one book → many issue records.
+
+*(Optional: add your ER diagram here)*
+![ER Diagram](screenshots/er-diagram.png)
 
 ---
 
-## 6. Step-by-Step Setup Guide
+## 🚀 Getting Started
 
-### Step 1: Clone or Navigate to the Workspace
+### Prerequisites
+- **JDK 17+** (21 or 25 recommended) – check with `java -version`
+- **MySQL 8.0+** – check with `mysql --version`
+- **Git**
+- **Docker** *(optional)*
+
+### 1. Clone the repository
 ```bash
+git clone https://github.com/mouli-tech2025/BookSphere.git
 cd BookSphere
 ```
 
-### Step 2: Import the Database Schema
-Launch MySQL and source the provided `schema.sql` script:
+### 2. Set up the database
 ```bash
 mysql -u root -p < schema.sql
 ```
-*Note: This creates the `library_db` database, sets up the 3 tables (`students`, `books`, `issue_records`), and seeds sample data (8 students, 12 books, 5 circulation records).*
+This creates `library_db` with 8 students, 12 books and 5 sample issue records.
 
-### Step 3: Configure Database Credentials
-Open `db.properties` in any text editor and update the username/password to match your local MySQL configuration:
+### 3. Configure the connection
+The app checks environment variables (`DB_URL`, `DB_USER`, `DB_PASSWORD`) first, then falls back to `db.properties`:
 ```properties
-db.url=jdbc:mysql://localhost:3306/library_db
+db.url=jdbc:mysql://localhost:3306/library_db?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC
 db.user=root
 db.password=your_mysql_password
 ```
 
----
+HikariCP defaults: max pool size 5, min idle 1, connection timeout 10 s, idle timeout 5 min, max lifetime 25 min, pool name `BookSpherePool`.
 
-## 7. Running the Application
+### 4. Run the project
 
-### On Linux or macOS:
+**Option A – Scripts (recommended)**
 ```bash
-./run.sh
-```
+# Linux / macOS
+chmod +x run.sh
+./run.sh          # start the web app
+./run.sh demo     # run the OOP console demo
 
-### On Windows:
-Double-click `run.bat` or run in Command Prompt:
-```cmd
+# Windows
 run.bat
-```
-
-### Accessing the Web Application
-Open your browser and navigate to:
-```text
-http://localhost:8080
-```
-
----
-
-## 8. Running the Standalone OOP Demo
-
-The project includes a standalone console demonstration that tests and showcases all 7 Object-Oriented Programming concepts in action **without needing MySQL or the HTTP server**.
-
-### Running via Script:
-```bash
-# On Linux / macOS:
-./run.sh demo
-
-# On Windows:
 run.bat demo
 ```
 
-### Running Manually:
+**Option B – Manual**
 ```bash
-# Compile (if not already compiled)
-javac -cp "lib/*" -d out src/com/library/demo/OopDemo.java
+# Compile
+javac -cp "lib/*" -d out $(find src -name "*.java")          # Linux / macOS
+javac -cp "lib/*" -d out src/com/library/*.java src/com/library/*/*.java   # Windows
 
-# Execute
-java -cp "out:lib/*" com.library.demo.OopDemo
+# Run the server
+java -cp "out:lib/*" com.library.Main      # Linux / macOS
+java -cp "out;lib/*" com.library.Main      # Windows
+
+# Run the OOP demo (no MySQL needed)
+java -cp "out:lib/*" com.library.demo.OopDemo   # use ; on Windows
 ```
+
+Open **http://localhost:8080** in your browser.
 
 ---
 
-## 9. REST API Endpoints Specification
+## 🐳 Docker & Deployment
 
-All API endpoints return a standardized JSON envelope:
-```json
-{
-  "success": true,
-  "message": "Human readable status message",
-  "data": { ... }
-}
+**Build and run locally**
+```bash
+docker build -t booksphere:latest .
+
+docker run -d -p 8080:8080 --env-file .env.docker --name booksphere-app booksphere:latest
+
+docker logs -f booksphere-app
 ```
 
-| Method | Endpoint | Parameters / Body | Description |
+Example `.env.docker` (never commit real passwords):
+```env
+DB_URL=jdbc:mysql://host.docker.internal:3306/library_db?useSSL=false&allowPublicKeyRetrieval=true
+DB_USER=root
+DB_PASSWORD=your_password
+PORT=8080
+```
+*(On Linux, replace `host.docker.internal` with your host IP or Docker bridge address.)*
+
+**Deploy on Render (or Railway / Fly.io)**
+1. Create a **Web Service** and choose the **Docker** environment.
+2. Set `PORT`, `DB_URL`, `DB_USER`, `DB_PASSWORD` as environment variables.
+3. Use a cloud MySQL URL with SSL, e.g.
+   `jdbc:mysql://<cloud-host>:4000/library_db?useSSL=true&sslMode=VERIFY_IDENTITY`
+4. Health checks: `/` and `/api/dashboard` both return HTTP 200.
+
+---
+
+## ⚙️ Environment Variables
+
+| Variable | Required | Default | Description |
 |---|---|---|---|
-| `GET` | `/api/dashboard` | None | Returns totalBooks, availableBooks, issuedBooks, totalStudents |
-| `GET` | `/api/books` | `query` (optional), `category` (optional) | List or search books |
-| `GET` | `/api/books/{id}` | None | Fetch single book details |
-| `GET` | `/api/books/{id}/availability` | None | Returns available boolean and availableCopies count |
-| `POST` | `/api/books` | `title`, `author`, `isbn`, `category`, `type`, `totalCopies` | Add a new book |
-| `PUT` | `/api/books/{id}` | `title`, `author`, `isbn`, `category`, `type`, `totalCopies` | Update existing book |
-| `DELETE` | `/api/books/{id}` | None | Delete book (fails if currently issued) |
-| `GET` | `/api/students` | `query` (optional) | List or search students |
-| `POST` | `/api/students` | `name`, `email`, `phone`, `rollNo`, `department` | Register a new student |
-| `POST` | `/api/issue` | `studentId`, `bookId` | Issue a book to a student |
-| `POST` | `/api/return` | `issueId` | Return an issued book & calculate fine |
-| `GET` | `/api/issues` | `status` (optional: `ISSUED` or `RETURNED`) | Retrieve circulation history |
+| `PORT` | No | `8080` | HTTP server port |
+| `DB_URL` | No | from `db.properties` | JDBC connection URL |
+| `DB_USER` | No | from `db.properties` | Database username |
+| `DB_PASSWORD` | No | from `db.properties` | Database password |
 
 ---
 
-## 10. Mapping the 7 OOP Concepts to Code
+## 🔮 Future Improvements
 
-| OOP Concept | Implementation Location(s) | Explanation in Context of the Project |
-|---|---|---|
-| **1. Classes & Objects** | `Person.java`, `Student.java`, `LibraryItem.java`, `TextBook.java`, `Novel.java`, `IssueRecord.java` | Real-world library entities are modeled as Java classes with fields and methods. Instances (objects) are dynamically instantiated from MySQL query results. |
-| **2. Encapsulation** | `Person.java`, `LibraryItem.java`, `IssueRecord.java` | All entity fields are declared `private`. Access is strictly controlled through getters and validated setters that reject invalid inputs (e.g. blank titles, invalid emails, negative copies). |
-| **3. Inheritance** | `Student extends Person`<br>`TextBook extends LibraryItem`<br>`Novel extends LibraryItem`<br>`Handlers extend BaseHandler` | Code reusability and hierarchical modeling. `Student` inherits personal attributes (`name`, `email`, `phone`) from `Person` via `super()`. Handlers inherit HTTP response and routing utilities from `BaseHandler`. |
-| **4. Polymorphism** | **Runtime**: `LibraryItem.calculateFine()` and `getLoanPeriodDays()` overridden in `TextBook` vs `Novel`.<br>**Compile-time**: `BookService.search(keyword)` vs `BookService.search(keyword, category)` | At runtime, `LibraryItem` references invoke subclass-specific logic dynamically (TextBook = 30 days & ₹1/day; Novel = 14 days & ₹2/day). At compile time, overloaded search methods offer flexible query signatures. |
-| **5. Abstraction** | `abstract class Person`<br>`abstract class LibraryItem`<br>`interface Searchable<T>`<br>`abstract class BaseHandler` | Hiding implementation complexity while establishing a strict contract. Abstract classes define methods that subclasses must implement. `Searchable<T>` decouples search callers from concrete service implementations. |
-| **6. Collections** | `List<LibraryItem>`, `ArrayList`, `LinkedHashMap<String, Integer>`, `Collections.sort` | `ArrayList` stores collections of polymorphic items. `Comparator.comparing()` sorts books by title. `LinkedHashMap` maintains ordered key-value pairs for dashboard metrics. |
-| **7. Exception Handling** | `com.library.exception.*`, `try-with-resources`, `try-catch-finally` | Custom checked exception hierarchy rooted at `LibraryException`. All database access utilizes automatic resource cleanup via `try-with-resources`. Handlers map exceptions into appropriate HTTP status codes (400, 404, 500). |
+- **JWT / session authentication** with Librarian and Student roles
+- **Barcode / QR scanning** of ISBNs through the browser camera
+- **Automated overdue reminders** by email (JavaMail)
+- **Pagination and export** of reports to CSV / PDF
 
 ---
 
-## 11. Class Relationship Diagram (ASCII)
 
-```text
-                     ┌───────────────────────┐
-                     │    <<interface>>      │
-                     │     Searchable<T>     │
-                     └───────────▲───────────┘
-                                 │ implements
-                ┌────────────────┴───────────────┐
-                │                                │
-    ┌───────────────────────┐        ┌───────────────────────┐
-    │      BookService      │        │    StudentService     │
-    └───────────┬───────────┘        └───────────┬───────────┘
-                │ uses                           │ uses
-                ▼                                ▼
-    ┌───────────────────────┐        ┌───────────────────────┐
-    │        BookDao        │        │      StudentDao       │
-    └───────────┬───────────┘        └───────────┬───────────┘
-                │ creates/returns                │ creates/returns
-                ▼                                ▼
-    ┌───────────────────────┐        ┌───────────────────────┐
-    │      <<abstract>>     │        │      <<abstract>>     │
-    │      LibraryItem      │        │         Person        │
-    └───────────▲───────────┘        └───────────▲───────────┘
-                │ extends                        │ extends
-        ┌───────┴───────┐                        │
-        │               │                        │
-┌───────────────┐ ┌───────────┐          ┌───────────────┐
-│   TextBook    │ │   Novel   │          │    Student    │
-└───────────────┘ └───────────┘          └───────────────┘
-```
+- **GitHub:** [mouli-tech2025/BookSphere](https://github.com/mouli-tech2025/BookSphere)
+- **Live Demo:** [booksphere-6gam.onrender.com](https://booksphere-6gam.onrender.com/)
 
 ---
 
-## 12. How Polymorphism & Factory Method Work
-
-### The Factory Method (`BookDao.createItem`)
-The database contains a `book_type` column storing `'TEXTBOOK'` or `'NOVEL'`. When querying MySQL, `BookDao` inspects this column and instantiates the correct subclass:
-
-```java
-// BookDao.java
-private LibraryItem createItem(ResultSet rs) throws SQLException, InvalidInputException {
-    String type = rs.getString("book_type");
-    if ("TEXTBOOK".equals(type)) {
-        return new TextBook(...);
-    } else {
-        return new Novel(...);
-    }
-}
-```
-
-### Runtime Dynamic Method Dispatch
-When a book is issued or returned, the system treats it uniformly as a `LibraryItem`:
-
-```java
-// IssueService.java
-LibraryItem item = bookService.getBookById(bookId);
-
-// POLYMORPHIC CALL:
-// If item is a TextBook -> returns 30 days
-// If item is a Novel    -> returns 14 days
-LocalDate dueDate = today.plusDays(item.getLoanPeriodDays());
-
-// When returning late:
-// If TextBook -> daysLate * ₹1.00
-// If Novel    -> daysLate * ₹2.00
-double fine = item.calculateFine(daysLate);
-```
-Neither `BookDao`, `IssueService`, nor `IssueHandler` needs to know the concrete type of the book; Java's virtual method table handles the dynamic dispatch at runtime.
-
----
-
-## 13. Sample Demo Flow for Viva & Evaluation
-
-1. **Start with the OOP Demo Console Application**:
-   - Run `./run.sh demo` (or `run.bat demo`).
-   - Walk the examiner through each of the 7 labeled sections printed in the terminal.
-2. **Start the Web Server**:
-   - Run `./run.sh` (or `run.bat`).
-   - Point the browser to `http://localhost:8080`.
-   - Show the Neo-Brutalism dashboard displaying real database counts.
-3. **Demonstrate Encapsulation & Validation**:
-   - Go to **Students** -> click **+ Register Student**.
-   - Enter an invalid email (`student123`) or a short phone number (`987`) to demonstrate validation rejection.
-   - Enter valid details and confirm the student appears immediately in the table.
-4. **Demonstrate Polymorphism (Circulation Rules)**:
-   - Go to **Issue & Return**.
-   - Issue a **TEXTBOOK** (e.g. *Head First Java*) to a student -> observe due date is 30 days ahead.
-   - Issue a **NOVEL** (e.g. *The Alchemist*) to a student -> observe due date is 14 days ahead.
-5. **Demonstrate Business Rules & Edge Cases**:
-   - Attempt to issue a book that has 0 available copies -> observe error toast.
-   - Attempt to issue a 4th book to a student already holding 3 books -> observe maximum quota rejection.
-   - Attempt to delete a book that is currently issued -> observe deletion prevention.
-
----
-
-## 14. 10 Likely Viva Questions & Answers
-
-### Q1: What is the difference between an abstract class and an interface in your project?
-> **Answer**: `LibraryItem` and `Person` are abstract classes because they provide common state (fields like `id`, `name`, `title`), constructor logic, and concrete utility methods (`calculateFine`, `isAvailable`) that subclasses share. In contrast, `Searchable<T>` is an interface because it defines only a pure contract (`List<T> search(String keyword)`) with no state, allowing unrelated classes (`BookService` and `StudentService`) to implement search capabilities independently.
-
-### Q2: How did you implement Encapsulation in your model classes?
-> **Answer**: In `Person`, `LibraryItem`, and `IssueRecord`, all member variables are declared `private`. External access is restricted to public getters and setters. Furthermore, setters contain defensive validation logic (e.g. checking for `@` in emails, enforcing 10-digit phone numbers, and ensuring copies cannot be negative) that throws `InvalidInputException` if violated.
-
-### Q3: How is Polymorphism demonstrated during book return?
-> **Answer**: In `IssueService.returnBook()`, we retrieve a `LibraryItem` reference. Calling `item.calculateFine(daysLate)` automatically invokes the overridden `calculateFine()` implementation in either `TextBook` (charging ₹1/day) or `Novel` (charging ₹2/day) without using `if-else` or type checks.
-
-### Q4: Why did you use `PreparedStatement` instead of `Statement`?
-> **Answer**: 
-> 1. **Security**: `PreparedStatement` uses parameterized queries, which prevents SQL Injection attacks by treating input as literal data rather than executable SQL.
-> 2. **Performance**: MySQL pre-compiles the SQL query template and reuses the execution plan for subsequent executions.
-
-### Q5: How do you guarantee atomicity when issuing a book?
-> **Answer**: In `IssueDao.issueBook()`, we turn off auto-commit (`conn.setAutoCommit(false)`). We insert the row into `issue_records` and decrement `available_copies` in `books` within the same transaction. If any step fails, `conn.rollback()` restores the database state, preventing inconsistencies.
-
-### Q6: How does the application parse requests and format responses without Jackson or Gson?
-> **Answer**: 
-> - Incoming requests use standard `application/x-www-form-urlencoded` bodies and query parameters, parsed by our lightweight `FormParser` using standard `URLDecoder`.
-> - Outgoing JSON is constructed by our custom `JsonBuilder` utility class, which handles string escaping (`\n`, `\"`, `\\`) and formats the standardized JSON envelope.
-
-### Q7: What is the role of `try-with-resources` in your DAO classes?
-> **Answer**: `try-with-resources` automatically closes resources that implement `java.lang.AutoCloseable` (such as `Connection`, `PreparedStatement`, and `ResultSet`) when the block exits, even if an exception occurs. This eliminates database connection leaks.
-
-### Q8: What is Method Overloading, and where did you use it?
-> **Answer**: Method Overloading is compile-time polymorphism where two or more methods in the same class share the same name but have different parameter lists. In `BookService`, we have `search(String keyword)` and `search(String keyword, String category)`.
-
-### Q9: Why is `DBConnection` placed in the `dao` package?
-> **Answer**: Following the Data Access Object (DAO) pattern, the DAO layer is the sole layer responsible for interacting with the database. Placing connection management within the DAO package encapsulates low-level JDBC details away from services and handlers.
-
-### Q10: How does your frontend communicate with the backend?
-> **Answer**: The frontend uses standard vanilla JavaScript `fetch()` calls wrapped in `api.js`. The backend's `HttpServer` serves both static files (`StaticFileHandler`) and API routes (`/api/*`), eliminating cross-origin resource sharing (CORS) complications.
-
----
-
-## 15. Troubleshooting Guide
-
-| Issue | Root Cause | Solution |
-|---|---|---|
-| **`CommunicationsException: Communications link failure`** | MySQL server is stopped or port `3306` is not reachable. | Start MySQL service (`brew services start mysql` on macOS, or `net start MySQL80` on Windows). |
-| **`Access denied for user 'root'@'localhost'`** | Incorrect password in `db.properties`. | Open `db.properties` and verify `db.user` and `db.password` match your MySQL root credentials. |
-| **`Unknown database 'library_db'`** | Database was not imported. | Run `mysql -u root -p < schema.sql` in terminal. |
-| **`Could not start server on port 8080: Address already in use`** | Another application (or previous Java instance) is using port 8080. | Find and kill the process: macOS/Linux: `lsof -ti :8080 \| xargs kill -9`, Windows: `netstat -ano \| findstr :8080` followed by `taskkill /F /PID <pid>`. |
-| **`ClassNotFoundException: com.mysql.cj.jdbc.Driver`** | Driver JAR missing from classpath. | Ensure `lib/mysql-connector-j-*.jar` exists and classpath is passed via `-cp "lib/*:out"`. |
-
----
-*Built with Core Java & Passion for Clean Software Architecture.*
+*Built with Core Java and clean object-oriented design.*
