@@ -358,7 +358,7 @@ PORT=8080
 
 ---
 
-
+-*Developed by* **Mouli Biswas**🦋
 - **GitHub:** [mouli-tech2025/BookSphere](https://github.com/mouli-tech2025/BookSphere)
 - **Live Demo:** [booksphere-6gam.onrender.com](https://booksphere-6gam.onrender.com/)
 
