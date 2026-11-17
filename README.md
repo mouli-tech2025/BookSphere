@@ -242,8 +242,7 @@ Database: `library_db` — 3 tables in 3NF.
 
 **Relationships:** one student → many issue records; one book → many issue records.
 
-*(Optional: add your ER diagram here)*
-![ER Diagram](screenshots/er-diagram.png)
+
 
 ---
 
